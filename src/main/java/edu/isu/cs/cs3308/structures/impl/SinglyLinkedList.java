@@ -31,7 +31,7 @@ public class SinglyLinkedList<E> implements List<E> {
 	protected boolean checkElement(E element) {
 	    // may eventually throw an error or some message
         // but currently am just doing an error check
-	    return (element != null) ? true : false;
+	    return element != null;
     }
 
 	/**
@@ -40,7 +40,7 @@ public class SinglyLinkedList<E> implements List<E> {
 	 * @return true if valid index, and false if invalid
 	 */
 	protected boolean checkIndex(int index) {
-	    return (index < size && index >= 0) ? true : false;
+	    return index < size && index >= 0;
     }
 
 	/**
@@ -67,10 +67,15 @@ public class SinglyLinkedList<E> implements List<E> {
 
 		// ADDED to make circular list easier
 		if (size > 0) {
-			verifyTail();
+			verifyBoundary();
 		}
 	}
 
+	/**
+	 * Will set the Node values appropriately for an add action
+	 * @param dataToAdd The data to store within the node
+	 * @param atIndex Index to add the node at
+	 */
 	protected void nodeSetAdd(E dataToAdd, int atIndex) {
 		// Create the node to add
 		Node<E> addNode = new Node<>(dataToAdd);
@@ -115,7 +120,11 @@ public class SinglyLinkedList<E> implements List<E> {
 		verifyList();
 	}
 
-
+	/**
+	 * Will set the Node values appropriately for a remove action
+	 * @param atIndex Index of the node to remove
+	 * @return The data within the node
+	 */
 	protected E nodeSetRemove(int atIndex) {
 		// Create the node to add
 		Node<E> removeNode = null;
@@ -129,9 +138,6 @@ public class SinglyLinkedList<E> implements List<E> {
 				// set the new head to next of original
 				head = removeNode.getNext();
 			}
-
-			// change the head to the new node
-			head = removeNode;
 		}
 
 		// else removing a Node at index in list
@@ -144,10 +150,10 @@ public class SinglyLinkedList<E> implements List<E> {
 
 			// set the new connection with the node removed
 			prevNode.setNext(removeNode.getNext());
-
-			// null out the next of the removeNode
-			removeNode.setNext(null);
 		}
+
+		// null out the next of the removeNode
+		removeNode.setNext(null);
 
 		// decrement size
 		subSize();
@@ -166,15 +172,15 @@ public class SinglyLinkedList<E> implements List<E> {
 	 */
 	protected Node<E> getNode(int index) {
 		// get current head node to start from
-		tempNode = head;
+		Node<E> seekNode = head;
 
 		// seek through the list starting from the head
 		for (int i = 0; i < index; i++) {
-			tempNode = tempNode.getNext();
+			seekNode = seekNode.getNext();
 		}
 
 		// return the desired Node from the list index
-		return tempNode;
+		return seekNode;
 	}
 
 	/**
@@ -200,7 +206,7 @@ public class SinglyLinkedList<E> implements List<E> {
 	 * ADDED to allow making a circular easy
 	 * Will verify the tail goes to null for the SLL
 	 */
-	protected void verifyTail() {
+	protected void verifyBoundary() {
 		tail.setNext(null);
 	}
 
@@ -387,7 +393,7 @@ public class SinglyLinkedList<E> implements List<E> {
 	 */
 	@Override
 	public boolean isEmpty() {
-		return (size == 0) ? true : false;
+		return size == 0;
 	}
 
 	/**
