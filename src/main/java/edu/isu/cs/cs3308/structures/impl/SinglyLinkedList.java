@@ -29,10 +29,10 @@ public class SinglyLinkedList<E> implements List<E> {
 	 * @return true if not null, and false if null
 	 */
 	protected boolean checkElement(E element) {
-	    // may eventually throw an error or some message
-        // but currently am just doing an error check
-	    return element != null;
-    }
+		// may eventually throw an error or some message
+		// but currently am just doing an error check
+		return element != null;
+	}
 
 	/**
 	 * Checks to see if a given index is within 0 and size
@@ -40,8 +40,8 @@ public class SinglyLinkedList<E> implements List<E> {
 	 * @return true if valid index, and false if invalid
 	 */
 	protected boolean checkIndex(int index) {
-	    return index < size && index >= 0;
-    }
+		return index < size && index >= 0;
+	}
 
 	/**
 	 * Used to fix the head and tail of the list
@@ -60,7 +60,7 @@ public class SinglyLinkedList<E> implements List<E> {
 		}
 
 		// else there are no nodes in the list
-		else if (size == 0) {
+		if (size == 0) {
 			head = null;
 			tail = null;
 		}
@@ -69,6 +69,12 @@ public class SinglyLinkedList<E> implements List<E> {
 		if (size > 0) {
 			verifyBoundary();
 		}
+
+		//DEBUG
+//		printList();
+//		System.out.println(first());
+//		System.out.println(last());
+
 	}
 
 	/**
@@ -80,8 +86,12 @@ public class SinglyLinkedList<E> implements List<E> {
 		// Create the node to add
 		Node<E> addNode = new Node<>(dataToAdd);
 
+
 		// if adding as the first Node
 		if (atIndex == 0) {
+			//DEBUG
+//			System.out.println("add first");
+
 			// if there is more than one node in the list
 			if (size > 0) {
 				// make the next of the new node to the original head
@@ -93,8 +103,11 @@ public class SinglyLinkedList<E> implements List<E> {
 		}
 
 		// else if adding as the last Node
-		else if (atIndex == size-1) {
-			// make the original tail next to the tail to be
+		else if (atIndex >= size) {
+			//DEBUG
+//			System.out.println("add last");
+
+			// else make the original tail next to the tail to be
 			tail.setNext(addNode);
 
 			// change the tail to the new node
@@ -103,6 +116,9 @@ public class SinglyLinkedList<E> implements List<E> {
 
 		// else inserts a Node at index in list
 		else {
+			//DEBUG
+//			System.out.println("insert");
+
 			// get the node before the one to be added
 			Node<E> prevNode = getNode(atIndex-1);
 
@@ -150,6 +166,12 @@ public class SinglyLinkedList<E> implements List<E> {
 
 			// set the new connection with the node removed
 			prevNode.setNext(removeNode.getNext());
+
+			// else if removing the last Node
+			if (atIndex >= size) {
+				// set new tail node
+				tail = prevNode;
+			}
 		}
 
 		// null out the next of the removeNode
@@ -216,7 +238,7 @@ public class SinglyLinkedList<E> implements List<E> {
 	 */
 	@Override
 	public E first() {
-	    return (head != null) ? head.getData() : null;
+		return (head != null) ? head.getData() : null;
 	}
 
 	/**
@@ -234,18 +256,18 @@ public class SinglyLinkedList<E> implements List<E> {
 	 */
 	@Override
 	public void addLast(E element) {
-	    // check if the element is not null
-        if (checkElement(element)) {
-        	// check if the size is at least 1
-        	if (!isEmpty()) {
-        		// add the node to the end
-        		nodeSetAdd(element,size-1);
+		// check if the element is not null
+		if (checkElement(element)) {
+			// check if the size is at least 1
+			if (!isEmpty()) {
+				// add the node to the end
+				nodeSetAdd(element,size);
 			}
-        	// else if size is 0 just add first
-        	else {
-        		addFirst(element);
+			// else if size is 0 just add first
+			else {
+				addFirst(element);
 			}
-        }
+		}
 	}
 
 	/**
@@ -254,11 +276,11 @@ public class SinglyLinkedList<E> implements List<E> {
 	 */
 	@Override
 	public void addFirst(E element) {
-        // check if the element is not null
-	    if (checkElement(element)) {
-	    	// add the node to the beginning
-	    	nodeSetAdd(element, 0);
-        }
+		// check if the element is not null
+		if (checkElement(element)) {
+			// add the node to the beginning
+			nodeSetAdd(element, 0);
+		}
 	}
 
 	/**
@@ -302,23 +324,26 @@ public class SinglyLinkedList<E> implements List<E> {
 	 */
 	@Override
 	public void insert(E element, int index) {
-	    // if the element is not null
-	    if (checkElement(element)) {
-			// if the index is the head
-			if (index == 0) {
-				addFirst(element);
-			}
+		// if the element is not null
+		if (checkElement(element)) {
+			// just check if index is greater than 0
+			if (index > 0) {
+				// if the index is the head
+				if (index == 0) {
+					addFirst(element);
+				}
 
-			// else if the index is the tail
-			else if (index >= size) {
-				addLast(element);
-			}
+				// else if the index is the tail
+				else if (index >= size) {
+					addLast(element);
+				}
 
-			// else the index is some other node
-			else {
-				nodeSetAdd(element, index);
+				// else the index is some other node
+				else {
+					nodeSetAdd(element, index);
+				}
 			}
-        }
+		}
 	}
 
 	/**
@@ -427,6 +452,9 @@ public class SinglyLinkedList<E> implements List<E> {
 		else {
 			System.out.println("There is nothing in this list.");
 		}
+
+		// empty tempNode so there is no issues
+		tempNode = null;
 	}
 
 	/**
@@ -435,7 +463,7 @@ public class SinglyLinkedList<E> implements List<E> {
 	 * @param item item to find in the list
 	 * @return the index of the found item in the list
 	 */
-	@Override
+//	@Override
 	public int indexOf(E item) {
 		// if there are nodes in the list and item is not null
 		if (!isEmpty() && item != null) {
@@ -453,6 +481,9 @@ public class SinglyLinkedList<E> implements List<E> {
 				tempNode = tempNode.getNext();
 			}
 		}
+
+		// empty tempNode so there is no issues
+		tempNode = null;
 
 		// else there are no nodes in the list or item is null
 		return -1;

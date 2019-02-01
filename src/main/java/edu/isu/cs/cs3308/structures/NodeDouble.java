@@ -1,7 +1,5 @@
 package edu.isu.cs.cs3308.structures;
 
-import org.checkerframework.checker.signature.qual.MethodDescriptor;
-
 /**
  * Node class needed for the Double List
  *

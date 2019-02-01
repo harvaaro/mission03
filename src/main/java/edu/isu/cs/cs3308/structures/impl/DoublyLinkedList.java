@@ -90,7 +90,7 @@ public class DoublyLinkedList<E> extends SinglyLinkedList<E> {
 		}
 
 		// else if removing the last Node
-		else if (atIndex == size-1) {
+		else if (atIndex >= size) {
 			// get the node before the one to be removed
 			NodeDouble<E> prevNode = tail.getPrev();
 
@@ -99,6 +99,9 @@ public class DoublyLinkedList<E> extends SinglyLinkedList<E> {
 
 			// set the new connection with the node removed
 			prevNode.setNext(removeNode.getNext());
+
+			// set new tail node
+			tail = prevNode;
 		}
 
 		// else removing a Node at index in list
@@ -137,7 +140,7 @@ public class DoublyLinkedList<E> extends SinglyLinkedList<E> {
 
 		// if in the first half of the list then use next
 		// TODO check to make sure this works
-		if (index < size/2) {
+		if (index <= size/2) {
 			// get current head node to start from
 			seekNode = head;
 
