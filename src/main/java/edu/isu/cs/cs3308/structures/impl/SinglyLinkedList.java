@@ -49,6 +49,14 @@ public class SinglyLinkedList<E> implements List<E> {
 	 * If the size of the list is 0 then set head and tail to null
 	 */
 	protected void verifyList() {
+		//DEBUG
+//		System.out.println("first:" + first());
+//		System.out.println("last:" + last());
+//		System.out.println(head.getData());
+//		System.out.println(tail.getData());
+//		System.out.println("size:" + size);
+//		printList();
+
 		// if theNode is the only one in the list
 		if (size == 1) {
 			if (head != null) {
@@ -69,12 +77,6 @@ public class SinglyLinkedList<E> implements List<E> {
 		if (size > 0) {
 			verifyBoundary();
 		}
-
-		//DEBUG
-//		printList();
-//		System.out.println(first());
-//		System.out.println(last());
-
 	}
 
 	/**
@@ -83,14 +85,16 @@ public class SinglyLinkedList<E> implements List<E> {
 	 * @param atIndex Index to add the node at
 	 */
 	protected void nodeSetAdd(E dataToAdd, int atIndex) {
+		//DEBUG
+//		System.out.println("Node");
+
 		// Create the node to add
 		Node<E> addNode = new Node<>(dataToAdd);
-
 
 		// if adding as the first Node
 		if (atIndex == 0) {
 			//DEBUG
-//			System.out.println("add first");
+//			System.out.println("add first " + dataToAdd);
 
 			// if there is more than one node in the list
 			if (size > 0) {
@@ -105,7 +109,7 @@ public class SinglyLinkedList<E> implements List<E> {
 		// else if adding as the last Node
 		else if (atIndex >= size) {
 			//DEBUG
-//			System.out.println("add last");
+//			System.out.println("add last " + dataToAdd);
 
 			// else make the original tail next to the tail to be
 			tail.setNext(addNode);
@@ -117,7 +121,7 @@ public class SinglyLinkedList<E> implements List<E> {
 		// else inserts a Node at index in list
 		else {
 			//DEBUG
-//			System.out.println("insert");
+//			System.out.println("insert " + dataToAdd);
 
 			// get the node before the one to be added
 			Node<E> prevNode = getNode(atIndex-1);

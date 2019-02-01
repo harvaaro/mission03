@@ -10,10 +10,10 @@ package edu.isu.cs.cs3308.structures;
 public class Node<E> {
 
 	// Data stored in the node.
-	private E data;
+	protected E data;
 
 	// Stores what the next node is.
-	private Node<E> next;
+	protected Node<E> next;
 
 	/**
 	 * Constructor with data parameter
