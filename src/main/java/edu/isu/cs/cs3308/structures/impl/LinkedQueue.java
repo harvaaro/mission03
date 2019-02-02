@@ -11,7 +11,7 @@ import edu.isu.cs.cs3308.structures.Queue;
 public class LinkedQueue<E> implements Queue<E> {
 
 	// create our DLL to use for the stack
-	DoublyLinkedList<E> theList = new DoublyLinkedList<>();
+	protected DoublyLinkedList<E> theList = new DoublyLinkedList<>();
 
 	/**
 	 * Add a new element onto the queue at the end
@@ -67,11 +67,9 @@ public class LinkedQueue<E> implements Queue<E> {
 	public void transfer(Queue<E> to) {
 		// if the stack is not null or empty
 		if (to != null && this.size() > 0) {
-		//DEBUG
-		printQueue();
+			// temporary linkedstack to help with reversal
+			LinkedStack<E> tempLinkStack = new LinkedStack<>();
 
-		// temporary linkedstack to help with reversal
-		LinkedStack<E> tempLinkStack = new LinkedStack<>();
 			// loop until all elements are transferred
 			while(this.size() > 0) {
 				tempLinkStack.push(this.poll());
@@ -89,9 +87,6 @@ public class LinkedQueue<E> implements Queue<E> {
 	 */
 	@Override
 	public void reverse() {
-		//DEBUG
-		printQueue();
-
 		// create 2 temporary stacks to use for reversing
 		LinkedQueue<E> temp1 = new LinkedQueue<>();
 		LinkedQueue<E> temp2 = new LinkedQueue<>();
@@ -115,9 +110,6 @@ public class LinkedQueue<E> implements Queue<E> {
 	@Override
 	public void merge(Queue<E> other) {
 		if (other != null) {
-			//DEBUG
-			printQueue();
-
 			// size of the other list to merge
 			int listSize = other.size();
 
