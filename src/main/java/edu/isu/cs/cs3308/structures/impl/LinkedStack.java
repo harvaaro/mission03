@@ -3,7 +3,7 @@ package edu.isu.cs.cs3308.structures.impl;
 import edu.isu.cs.cs3308.structures.Stack;
 
 /**
- * A linked stack that is based off of a Doubly Linked List
+ * A linked stack that is based off of a Stack
  *
  * @author Aaron Harvey
  * @param <E> any type of stack

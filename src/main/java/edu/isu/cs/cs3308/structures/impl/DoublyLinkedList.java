@@ -128,7 +128,7 @@ public class DoublyLinkedList<E> extends SinglyLinkedList<E> {
 			removeNode = (NodeDouble<E>) prevNode.getNext();
 
 			// set the following node to point back to new node
-			((NodeDouble<E>) removeNode.getNext()).setPrev(removeNode);
+			((NodeDouble<E>) removeNode.getNext()).setPrev(prevNode);
 
 			// set the new connection with the node removed
 			prevNode.setNext(removeNode.getNext());

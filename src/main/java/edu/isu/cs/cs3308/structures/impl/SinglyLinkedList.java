@@ -441,7 +441,7 @@ public class SinglyLinkedList<E> implements List<E> {
 			for (int i = 0; i < size; i++) {
 				// print the current nodes data with a space after it
 				if (i < size-1) {
-					System.out.print(tempNode.getData() + " ");
+					System.out.print(tempNode.getData() + "\n");
 				}
 				// else on the last value
 				else {
