@@ -172,7 +172,7 @@ public class SinglyLinkedList<E> implements List<E> {
 			prevNode.setNext(removeNode.getNext());
 
 			// else if removing the last Node
-			if (atIndex >= size) {
+			if (atIndex >= size-1) {
 				// set new tail node
 				tail = prevNode;
 			}
@@ -476,6 +476,11 @@ public class SinglyLinkedList<E> implements List<E> {
 
 			// iterate though the list, until we reach the end
 			for (int i = 0; i < size; i++) {
+				//DEBUG
+				System.out.println(i);
+				System.out.println(tempNode.getData());
+				System.out.println(tempNode.getData() == item);
+
 				// if current node matches the item, then return index
 				if (tempNode.getData() == item) {
 					return i;

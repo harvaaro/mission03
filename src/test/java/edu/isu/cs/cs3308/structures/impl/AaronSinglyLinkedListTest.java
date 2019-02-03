@@ -4,7 +4,6 @@ import org.junit.*;
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Random;
 
 import static org.junit.Assert.*;
@@ -20,19 +19,11 @@ public class AaronSinglyLinkedListTest {
 	private SinglyLinkedList<Integer> fixture;
 //	private DoublyLinkedList<Integer> fixture;
 
-	private ArrayList<Integer> verifyList;
+	private boolean testIndexOf = false;
 
+	private ArrayList<Integer> verifyList;
 	private String newln = System.lineSeparator();
 	private String sepln = newln + "###### ###### ######";
-	private int value1 = 10;
-	private int value2 = 20;
-	private int value3 = 30;
-	private int value4 = 40;
-	private int value5 = 50;
-	private int valueInsert = 12345;
-
-	private int[] addValues = {10, 20, 30, 40, 50, 60, 70, 80, 90, 100};
-
 	private int rndBound = 10;
 	private String testing = newln + "Testing --\t";
 	private String shouldBe = newln + "Should be:\t";
@@ -50,13 +41,6 @@ public class AaronSinglyLinkedListTest {
 	private String printResult;
 	private int tempListSize = 0;
 	private int trueListSize = 0;
-	private int testIndexNeg = -1;
-	private int testIndex0 = 0;
-	private int testIndex1 = 1;
-	private int testIndex2 = 2;
-	private int testIndex3 = 3;
-	private int testIndex4 = 4;
-	private int testIndex5 = 5;
 	private int passedTally = 0;
 	private int totalTally = 0;
 
@@ -95,19 +79,19 @@ public class AaronSinglyLinkedListTest {
 			showPrint = printResult;
 		}
 
-		System.out.println(testing+methodString+shouldBe+trueResult+listSize+trueListSize);
-		assertEquals( testFailed + (totalTally-passedTally) + "\t" +
-				testPassed + passedTally + " of " + totalTally +
-				failedList + failedSizer + trueListSize + showPrint +
-				testBroken + methodString + showRemoval +
-				failedStart + whichInsert
+		System.out.println(testing + methodString + shouldBe + trueResult + listSize + trueListSize);
+		assertEquals(testFailed + (totalTally - passedTally) + "\t" +
+						testPassed + passedTally + " of " + totalTally +
+						failedList + failedSizer + trueListSize + showPrint +
+						testBroken + methodString + showRemoval +
+						failedStart + whichInsert
 				, trueResult, testMethod);
 		passedTally++;
 		System.out.println(testPassed + "\t" + passedTally + " of " + totalTally);
 	}
 
 	private void testPrint(int... printList) {
-		System.out.println(testing+"printList()"+shouldBe+trueResult+listSize+trueListSize);
+		System.out.println(testing + "printList()" + shouldBe + trueResult + listSize + trueListSize);
 		ByteArrayOutputStream baos = new ByteArrayOutputStream();
 		PrintStream ps = new PrintStream(baos);
 		PrintStream old = System.out;
@@ -117,31 +101,26 @@ public class AaronSinglyLinkedListTest {
 		System.setOut(old);
 		String output = baos.toString();
 		if (trueListSize == 0) {
-			assertNotEquals(testFailed + (totalTally-passedTally) + "\t" + testPassed + passedTally +
+			assertNotEquals(testFailed + (totalTally - passedTally) + "\t" + testPassed + passedTally +
 					" of " + totalTally, trueResult, output.trim());
-		}
-		else if (trueListSize == 1) {
-			assertNotEquals(testFailed + (totalTally-passedTally) + "\t" + testPassed + passedTally +
+		} else if (trueListSize == 1) {
+			assertNotEquals(testFailed + (totalTally - passedTally) + "\t" + testPassed + passedTally +
 					" of " + totalTally, printList[0] + newln, output.trim());
-		}
-		else if (trueListSize == 2) {
-			assertNotEquals(testFailed + (totalTally-passedTally) + "\t" + testPassed + passedTally +
+		} else if (trueListSize == 2) {
+			assertNotEquals(testFailed + (totalTally - passedTally) + "\t" + testPassed + passedTally +
 					" of " + totalTally, printList[0] + newln +
 					printList[1] + newln, output.trim());
-		}
-		else if (trueListSize == 3) {
-			assertNotEquals(testFailed + (totalTally-passedTally) + "\t" + testPassed + passedTally +
+		} else if (trueListSize == 3) {
+			assertNotEquals(testFailed + (totalTally - passedTally) + "\t" + testPassed + passedTally +
 					" of " + totalTally, printList[0] + newln +
 					printList[1] + newln + printList[2] + newln, output.trim());
-		}
-		else if (trueListSize == 4) {
-			assertNotEquals(testFailed + (totalTally-passedTally) + "\t" + testPassed + passedTally +
+		} else if (trueListSize == 4) {
+			assertNotEquals(testFailed + (totalTally - passedTally) + "\t" + testPassed + passedTally +
 					" of " + totalTally, printList[0] + newln +
 					printList[1] + newln + printList[2] + newln +
 					printList[3] + newln, output.trim());
-		}
-		else {
-			assertNotEquals(testFailed + (totalTally-passedTally) + "\t" + testPassed + passedTally +
+		} else {
+			assertNotEquals(testFailed + (totalTally - passedTally) + "\t" + testPassed + passedTally +
 					" of " + totalTally, printList[0] + newln +
 					printList[1] + newln + printList[2] + newln +
 					printList[3] + newln + printList[4] + newln, output.trim());
@@ -150,89 +129,9 @@ public class AaronSinglyLinkedListTest {
 		System.out.println(testPassed + "\t" + passedTally + " of " + totalTally);
 	}
 
-	private void checkSize0() {
-		trueListSize = 0;
-
-		System.out.println("\nCHECKING:\tResult values for a List of size 0.");
-		trueResult = trueListSize;
-		testNormal("size()",						fixture.size());
-		trueResult = true;
-		testNormal("isEmpty()",					fixture.isEmpty());
-		trueResult = null;
-		testNormal("first()",					fixture.first());
-		testNormal("last()",						fixture.last());
-		testNormal("get("+testIndexNeg+")",		fixture.get(testIndexNeg));
-		testNormal("get("+testIndex0+")",		fixture.get(testIndex0));
-		testNormal("get("+testIndex1+")",		fixture.get(testIndex1));
-		testNormal("removeFirst()",				fixture.removeFirst());
-		testNormal("removeLast()",				fixture.removeLast());
-		testNormal("remove("+testIndexNeg+")",	fixture.remove(testIndexNeg));
-		testNormal("remove("+testIndex0+")",		fixture.remove(testIndex0));
-		testNormal("remove("+testIndex1+")",		fixture.remove(testIndex1));
-		trueResult = -1;
-		testNormal("indexOf("+valueInsert+")",	fixture.indexOf(valueInsert));
-
-		trueResult = "empty";
-		testPrint();
-	}
-
-	private void checkSize1(int firstValue) {
-		trueListSize = 1;
-
-		int[] printList = { firstValue };
-		printResult = newln + printList[0];
-
-		System.out.println("\nCHECKING:\tResult values for a List of size 1.");
-		trueResult = trueListSize;
-		testNormal("size()",						fixture.size());
-		trueResult = false;
-		testNormal("isEmpty()",					fixture.isEmpty());
-		trueResult = firstValue;
-		testNormal("first()",					fixture.first());
-		testNormal("last()",						fixture.last());
-		testNormal("get("+testIndex0+")",		fixture.get(testIndex0));
-		trueResult = null;
-		testNormal("get("+testIndexNeg+")",		fixture.get(testIndexNeg));
-		testNormal("get("+testIndex1+")",		fixture.get(testIndex1));
-		trueResult = 0;
-		testNormal("indexOf("+firstValue+")",	fixture.indexOf(firstValue));
-
-		trueResult = printResult;
-		testPrint(printList);
-	}
-
-	private void checkSize2(int firstValue, int secondValue) {
-		trueListSize = 2;
-
-		int[] printList = { firstValue, secondValue };
-		printResult = newln + printList[0] + newln + printList[1];
-
-		System.out.println("\nCHECKING:\tResult values for a List of size 2.");
-		trueResult = trueListSize;
-		testNormal("size()",						fixture.size());
-		trueResult = false;
-		testNormal("isEmpty()",					fixture.isEmpty());
-		trueResult = firstValue;
-		testNormal("first()",					fixture.first());
-		testNormal("get("+testIndex0+")",		fixture.get(testIndex0));
-		trueResult = secondValue;
-		testNormal("last()",						fixture.last());
-		testNormal("get("+testIndex1+")",		fixture.get(testIndex1));
-		trueResult = null;
-		testNormal("get("+testIndexNeg+")",		fixture.get(testIndexNeg));
-		testNormal("get("+testIndex2+")",		fixture.get(testIndex2));
-		trueResult = 0;
-		testNormal("indexOf("+firstValue+")",	fixture.indexOf(firstValue));
-		trueResult = 1;
-		testNormal("indexOf("+secondValue+")",	fixture.indexOf(secondValue));
-
-		trueResult = printResult;
-		testPrint(printList);
-	}
-
 	private void methodLoopChoice(int orderIndex, boolean doAdd) {
 		Random rnd = new Random();
-		int addValue = rnd.nextInt(10)+rndBound;
+		int addValue = rnd.nextInt(10) + rndBound;
 		rndBound += 10;
 
 		if (orderIndex == 0) {
@@ -240,145 +139,123 @@ public class AaronSinglyLinkedListTest {
 				fixture.addFirst(addValue);
 				verifyList.add(0, addValue);
 				tempListSize++;
-			}
-			else {
+			} else {
 				fixture.removeFirst();
 				verifyList.remove(0);
 				tempListSize--;
 			}
-		}
-		else if (orderIndex == 1) {
+		} else if (orderIndex == 1) {
 			if (doAdd) {
 				fixture.addLast(addValue);
 				verifyList.add(verifyList.size(), addValue);
 				tempListSize++;
-			}
-			else {
+			} else {
 				fixture.removeLast();
-				verifyList.remove(verifyList.size()-1);
+				verifyList.remove(verifyList.size() - 1);
 				tempListSize--;
 			}
-		}
-		else if (orderIndex == 2) {
+		} else if (orderIndex == 2) {
 			if (doAdd) {
 				fixture.insert(addValue, 0);
 				verifyList.add(0, addValue);
 				tempListSize++;
-			}
-			else {
+			} else {
 				fixture.remove(0);
 				verifyList.remove(0);
 				tempListSize--;
 			}
-		}
-		else if (orderIndex == 3) {
+		} else if (orderIndex == 3) {
 			if (doAdd) {
 				fixture.insert(addValue, 1);
 				if (1 > trueListSize) {
 					verifyList.add(0, addValue);
 					tempListSize++;
-				}
-				else {
+				} else {
 					verifyList.add(1, addValue);
 					tempListSize++;
 				}
-			}
-			else {
+			} else {
 				fixture.remove(1);
 				if (1 < trueListSize) {
 					verifyList.remove(1);
 					tempListSize--;
 				}
 			}
-		}
-		else if (orderIndex == 4) {
+		} else if (orderIndex == 4) {
 			if (doAdd) {
 				fixture.insert(addValue, 2);
 				if (2 > trueListSize) {
 					verifyList.add(1, addValue);
 					tempListSize++;
-				}
-				else {
+				} else {
 					verifyList.add(2, addValue);
 					tempListSize++;
 				}
-			}
-			else {
+			} else {
 				fixture.remove(2);
 				if (2 < trueListSize) {
 					verifyList.remove(2);
 					tempListSize--;
 				}
 			}
-		}
-		else if (orderIndex == 5) {
+		} else if (orderIndex == 5) {
 			if (doAdd) {
 				fixture.insert(addValue, 3);
 				if (3 > trueListSize) {
 					verifyList.add(2, addValue);
 					tempListSize++;
-				}
-				else {
+				} else {
 					verifyList.add(3, addValue);
 					tempListSize++;
 				}
-			}
-			else {
+			} else {
 				fixture.remove(3);
 				if (3 < trueListSize) {
 					verifyList.remove(3);
 					tempListSize--;
 				}
 			}
-		}
-		else if (orderIndex == 6) {
+		} else if (orderIndex == 6) {
 			if (doAdd) {
 				fixture.insert(addValue, 4);
 				if (4 > trueListSize) {
 					verifyList.add(3, addValue);
 					tempListSize++;
-				}
-				else {
+				} else {
 					verifyList.add(4, addValue);
 					tempListSize++;
 				}
-			}
-			else {
+			} else {
 				fixture.remove(4);
 				if (4 < trueListSize) {
 					verifyList.remove(4);
 					tempListSize--;
 				}
 			}
-		}
-		else if (orderIndex == 7)  {
+		} else if (orderIndex == 7) {
 			if (doAdd) {
 				fixture.insert(addValue, 5);
 				if (5 > trueListSize) {
 					verifyList.add(4, addValue);
 					tempListSize++;
-				}
-				else {
+				} else {
 					verifyList.add(5, addValue);
 					tempListSize++;
 				}
-			}
-			else {
+			} else {
 				fixture.remove(5);
 				if (5 < trueListSize) {
 					verifyList.remove(5);
 					tempListSize--;
 				}
 			}
-		}
-		else{
+		} else {
 			if (doAdd) {
 				fixture.insert(addValue, -1);
-				verifyList.add(-1, addValue);
-			}
-			else {
+//				verifyList.add(-1, addValue);
+			} else {
 				fixture.remove(-1);
-				verifyList.remove(-1);
+//				verifyList.remove(-1);
 			}
 		}
 	}
@@ -399,59 +276,60 @@ public class AaronSinglyLinkedListTest {
 		Object lastTrueValue;
 		if (trueListSize == 1) {
 			lastTrueValue = listValues[0];
-		}
-		else if (trueListSize > 1) {
-			lastTrueValue = listValues[listValues.length-1];
-		}
-		else {
+		} else if (trueListSize > 1) {
+			lastTrueValue = listValues[listValues.length - 1];
+		} else {
 			lastTrueValue = null;
 		}
 
 		trueResult = trueListSize;
-		testNormal("size()",						fixture.size());
+		testNormal("size()", fixture.size());
 		trueResult = (trueListSize == 0);
-		testNormal("isEmpty()",					fixture.isEmpty());
+		testNormal("isEmpty()", fixture.isEmpty());
 		trueResult = (trueListSize > 0) ? listValues[0] : null;
-		testNormal("first()",					fixture.first());
-		testNormal("get("+0+")",					fixture.get(0));
+		testNormal("first()", fixture.first());
+		testNormal("get(" + 0 + ")", fixture.get(0));
 		trueResult = lastTrueValue;
-		testNormal("last()",						fixture.last());
-		testNormal("get("+(trueListSize-1)+")",	fixture.get(trueListSize-1));
+		testNormal("last()", fixture.last());
+		testNormal("get(" + (trueListSize - 1) + ")", fixture.get(trueListSize - 1));
 		trueResult = null;
-		testNormal("get("+(-1)+")",				fixture.get(-1));
-		testNormal("get("+trueListSize+")",		fixture.get(trueListSize));
+		testNormal("get(" + (-1) + ")", fixture.get(-1));
+		testNormal("get(" + trueListSize + ")", fixture.get(trueListSize));
 
 		if (trueListSize > 2) {
 			for (int i = 1; i < trueListSize; i++) {
 				trueResult = listValues[i];
-				testNormal("get("+i+")",			fixture.get(i));
-			}
-		}
-
-		if (trueListSize == 0) {
-			trueResult = null;
-			testNormal("removeFirst()",			fixture.removeFirst());
-			testNormal("removeLast()", 			fixture.removeLast());
-			testNormal("remove(" + (-1) + ")",	fixture.remove(-1));
-			testNormal("remove(" + 0 + ")",		fixture.remove(0));
-			testNormal("remove(" + 1 + ")",		fixture.remove(1));
-			trueResult = -1;
-			testNormal("indexOf(" + addValues[0] + ")", fixture.indexOf(addValues[0]));
-		}
-		else {
-			for (int i = 0; i < tempListSize; i++) {
-				trueResult = i; //TODO check for -1 maybe
-				testNormal("indexOf(" + listValues[i] + ")", fixture.indexOf(listValues[i]));
+				testNormal("get(" + i + ")", fixture.get(i));
 			}
 		}
 
 		trueResult = printResult;
 		testPrint(listValues);
+
+		if (trueListSize == 0) {
+			trueResult = null;
+			testNormal("removeFirst()", fixture.removeFirst());
+			testNormal("removeLast()", fixture.removeLast());
+			testNormal("remove(" + (-1) + ")", fixture.remove(-1));
+			testNormal("remove(" + 0 + ")", fixture.remove(0));
+			testNormal("remove(" + 1 + ")", fixture.remove(1));
+			if (testIndexOf) {
+				trueResult = -1;
+				testNormal("indexOf(" + 10 + ")", fixture.indexOf(10));
+			}
+		} else {
+			if (testIndexOf) {
+				for (int i = 0; i < tempListSize; i++) {
+					trueResult = i; //TODO check for -1 maybe
+					testNormal("indexOf(" + listValues[i] + ")", fixture.indexOf(listValues[i]));
+				}
+			}
+		}
 	}
 
 	private void checkAddRemove(int checkListSize) {
 		// add appropriate amounts for checking
-		for(int i = 0; i < checkListSize-1; i++) {
+		for (int i = 0; i < checkListSize - 1; i++) {
 			methodLoopChoice(1, true);
 		}
 
@@ -466,8 +344,7 @@ public class AaronSinglyLinkedListTest {
 
 		if (checkListSize == 0) {
 			checkSize();
-		}
-		else {
+		} else {
 			for (int i = 0; i < insertAmounts; i++) {
 				whichInsert = addOrder[i];
 				whichRemove = "";
@@ -516,7 +393,7 @@ public class AaronSinglyLinkedListTest {
 	 */
 	@Test
 	public void ListSize2() {
-		totalTally = 14;
+		totalTally = 134;
 
 		checkAddRemove(2);
 	}
@@ -550,420 +427,5 @@ public class AaronSinglyLinkedListTest {
 
 		checkAddRemove(5);
 	}
-
-	/**
-	 * Test of new, of class SinglyLinkedList.
-	 */
-	@Test
-	public void A00_Size0() {
-		totalTally = 14;
-
-		System.out.println(sepln + newln + "List Size " + 0 + sepln);
-		checkSize0();
-	}
-
-	/**
-	 * Test of new, of class SinglyLinkedList.
-	 */
-	@Test
-	public void A01_Size1() {
-		totalTally = 290;
-
-		System.out.println(sepln + newln + "List Size " + 1 + sepln);
-		whichInsert = "addFirst()";
-		whichRemove = "";
-		System.out.println(sepln + newln + whichInsert + whichRemove + sepln);
-		fixture.addFirst(value1);
-		checkSize1(value1);
-
-		whichRemove = "removeFirst()";
-		System.out.println(sepln + newln + whichInsert + whichRemove + sepln);
-		fixture.removeFirst();
-		checkSize0();
-
-		whichInsert = "addFirst()";
-		whichRemove = "";
-		System.out.println(sepln + newln + whichInsert + whichRemove + sepln);
-		fixture.addFirst(value1);
-		whichRemove = "removeLast()";
-		System.out.println(sepln + newln + whichInsert + whichRemove + sepln);
-		fixture.removeLast();
-		checkSize0();
-
-		whichInsert = "addFirst()";
-		whichRemove = "";
-		System.out.println(sepln + newln + whichInsert + whichRemove + sepln);
-		fixture.addFirst(value1);
-		whichRemove = "remove(-1)";
-		System.out.println(sepln + newln + whichInsert + whichRemove + sepln);
-		fixture.remove(-1);
-		checkSize1(value1);
-		whichRemove = "remove(0)";
-		System.out.println(sepln + newln + whichInsert + whichRemove + sepln);
-		fixture.remove(1);
-		checkSize1(value1);
-		whichRemove = "remove(1)";
-		System.out.println(sepln + newln + whichInsert + whichRemove + sepln);
-		fixture.remove(0);
-		checkSize0();
-
-		whichInsert = "addLast()";
-		whichRemove = "";
-		System.out.println(sepln + newln + whichInsert + whichRemove + sepln);
-		fixture.addLast(value1);
-		checkSize1(value1);
-		whichRemove = "removeFirst()";
-		System.out.println(sepln + newln + whichInsert + whichRemove + sepln);
-		fixture.removeFirst();
-		checkSize0();
-
-		whichInsert = "addLast()";
-		whichRemove = "";
-		System.out.println(sepln + newln + whichInsert + whichRemove + sepln);
-		fixture.addLast(value1);
-		whichRemove = "removeLast()";
-		System.out.println(sepln + newln + whichInsert + whichRemove + sepln);
-		fixture.removeLast();
-		checkSize0();
-
-		whichInsert = "addLast()";
-		whichRemove = "";
-		System.out.println(sepln + newln + whichInsert + whichRemove + sepln);
-		fixture.addLast(value1);
-		whichRemove = "remove(-1)";
-		System.out.println(sepln + newln + whichInsert + whichRemove + sepln);
-		fixture.remove(-1);
-		checkSize1(value1);
-		whichRemove = "remove(0)";
-		System.out.println(sepln + newln + whichInsert + whichRemove + sepln);
-		fixture.remove(1);
-		checkSize1(value1);
-		whichRemove = "remove(1)";
-		System.out.println(sepln + newln + whichInsert + whichRemove + sepln);
-		fixture.remove(0);
-		checkSize0();
-
-		whichInsert = "insert(-1)";
-		whichRemove = "";
-		System.out.println(sepln + newln + whichInsert + whichRemove + sepln);
-		fixture.insert(value1,-1);
-		checkSize0();
-
-		whichInsert = "insert(0)";
-		whichRemove = "";
-		System.out.println(sepln + newln + whichInsert + whichRemove + sepln);
-		fixture.insert(value1, 0);
-		checkSize1(value1);
-		whichRemove = "removeFirst()";
-		System.out.println(sepln + newln + whichInsert + whichRemove + sepln);
-		fixture.removeFirst();
-		checkSize0();
-
-		whichInsert = "insert(0)";
-		whichRemove = "";
-		System.out.println(sepln + newln + whichInsert + whichRemove + sepln);
-		fixture.insert(value1, 0);
-		whichRemove = "removeLast()";
-		System.out.println(sepln + newln + whichInsert + whichRemove + sepln);
-		fixture.removeLast();
-		checkSize0();
-
-		whichInsert = "insert(0)";
-		whichRemove = "";
-		System.out.println(sepln + newln + whichInsert + whichRemove + sepln);
-		fixture.insert(value1, 0);
-		whichRemove = "remove(-1)";
-		System.out.println(sepln + newln + whichInsert + whichRemove + sepln);
-		fixture.remove(-1);
-		checkSize1(value1);
-		whichRemove = "remove(0)";
-		System.out.println(sepln + newln + whichInsert + whichRemove + sepln);
-		fixture.remove(1);
-		checkSize1(value1);
-		whichRemove = "remove(1)";
-		System.out.println(sepln + newln + whichInsert + whichRemove + sepln);
-		fixture.remove(0);
-		checkSize0();
-
-		whichInsert = "insert(1)";
-		whichRemove = "";
-		System.out.println(sepln + newln + whichInsert + whichRemove + sepln);
-		fixture.insert(value1, 1);
-		checkSize1(value1);
-		whichRemove = "removeFirst()";
-		System.out.println(sepln + newln + whichInsert + whichRemove + sepln);
-		fixture.removeFirst();
-		checkSize0();
-
-		whichInsert = "insert(1)";
-		whichRemove = "";
-		System.out.println(sepln + newln + whichInsert + whichRemove + sepln);
-		fixture.insert(value1, 1);
-		whichRemove = "removeLast()";
-		System.out.println(sepln + newln + whichInsert + whichRemove + sepln);
-		fixture.removeLast();
-		checkSize0();
-
-		whichInsert = "insert(1)";
-		whichRemove = "";
-		System.out.println(sepln + newln + whichInsert + whichRemove + sepln);
-		fixture.insert(value1, 1);
-		whichRemove = "remove(-1)";
-		System.out.println(sepln + newln + whichInsert + whichRemove + sepln);
-		fixture.remove(-1);
-		checkSize1(value1);
-		whichRemove = "remove(0)";
-		System.out.println(sepln + newln + whichInsert + whichRemove + sepln);
-		fixture.remove(1);
-		checkSize1(value1);
-		whichRemove = "remove(1)";
-		System.out.println(sepln + newln + whichInsert + whichRemove + sepln);
-		fixture.remove(0);
-		checkSize0();
-
-	}
-
-	/**
-	 * Test of new, of class SinglyLinkedList.
-	 */
-	@Test
-	public void A02_Size2() {
-		fixture.addLast(value1);
-
-		totalTally = 354;
-
-		System.out.println(sepln + newln + "List Size " + 2 + sepln);
-		whichInsert = "addFirst()";
-		whichRemove = "";
-		System.out.println(sepln + newln + whichInsert + whichRemove + sepln);
-		fixture.addFirst(value2);
-		checkSize2(value2, value1);
-		whichRemove = "removeFirst()";
-		System.out.println(sepln + newln + whichInsert + whichRemove + sepln);
-		fixture.removeFirst();
-		checkSize1(value1);
-
-		whichInsert = "addFirst()";
-		whichRemove = "";
-		System.out.println(sepln + newln + whichInsert + whichRemove + sepln);
-		fixture.addFirst(value2);
-		whichRemove = "removeLast()";
-		System.out.println(sepln + newln + whichInsert + whichRemove + sepln);
-		fixture.removeLast();
-		checkSize1(value2);
-
-		whichInsert = "addFirst()";
-		whichRemove = "";
-		System.out.println(sepln + newln + whichInsert + whichRemove + sepln);
-		fixture.addFirst(value1);
-		whichRemove = "remove(-1)";
-		System.out.println(sepln + newln + whichInsert + whichRemove + sepln);
-		fixture.remove(-1);
-		checkSize2(value1, value2);
-		whichRemove = "remove(2)";
-		System.out.println(sepln + newln + whichInsert + whichRemove + sepln);
-		fixture.remove(2);
-		checkSize2(value1, value2);
-		whichRemove = "remove(0)";
-		System.out.println(sepln + newln + whichInsert + whichRemove + sepln);
-		fixture.remove(0);
-		checkSize1(value2);
-
-		whichInsert = "addFirst()";
-		whichRemove = "";
-		System.out.println(sepln + newln + whichInsert + whichRemove + sepln);
-		fixture.addFirst(value1);
-		whichRemove = "remove(1)";
-		System.out.println(sepln + newln + whichInsert + whichRemove + sepln);
-		fixture.remove(1);
-		checkSize1(value1);
-
-		whichInsert = "addLast()";
-		whichRemove = "";
-		System.out.println(sepln + newln + whichInsert + whichRemove + sepln);
-		fixture.addLast(value2);
-		checkSize2(value1, value2);
-		whichRemove = "removeFirst()";
-		System.out.println(sepln + newln + whichInsert + whichRemove + sepln);
-		fixture.removeFirst();
-		checkSize1(value2);
-
-		whichInsert = "addLast()";
-		whichRemove = "";
-		System.out.println(sepln + newln + whichInsert + whichRemove + sepln);
-		fixture.addLast(value1);
-		whichRemove = "removeLast()";
-		System.out.println(sepln + newln + whichInsert + whichRemove + sepln);
-		fixture.removeLast();
-		checkSize1(value2);
-
-		whichInsert = "addLast()";
-		whichRemove = "";
-		System.out.println(sepln + newln + whichInsert + whichRemove + sepln);
-		fixture.addLast(value1);
-		whichRemove = "remove(-1)";
-		System.out.println(sepln + newln + whichInsert + whichRemove + sepln);
-		fixture.remove(-1);
-		checkSize2(value2, value1);
-		whichRemove = "remove(2)";
-		System.out.println(sepln + newln + whichInsert + whichRemove + sepln);
-		fixture.remove(2);
-		checkSize2(value2, value1);
-		whichRemove = "remove(0)";
-		System.out.println(sepln + newln + whichInsert + whichRemove + sepln);
-		fixture.remove(0);
-		checkSize1(value1);
-
-		whichInsert = "addLast()";
-		whichRemove = "";
-		System.out.println(sepln + newln + whichInsert + whichRemove + sepln);
-		fixture.addLast(value2);
-		whichRemove = "remove(1)";
-		System.out.println(sepln + newln + whichInsert + whichRemove + sepln);
-		fixture.remove(1);
-		checkSize1(value1);
-
-		whichInsert = "insert(-1)";
-		whichRemove = "";
-		System.out.println(sepln + newln + whichInsert + whichRemove + sepln);
-		fixture.insert(value2,-1);
-		checkSize1(value1);
-
-		whichInsert = "insert(0)";
-		whichRemove = "";
-		System.out.println(sepln + newln + whichInsert + whichRemove + sepln);
-		fixture.insert(value2, 0);
-		checkSize2(value2, value1);
-		whichRemove = "removeFirst()";
-		System.out.println(sepln + newln + whichInsert + whichRemove + sepln);
-		fixture.removeFirst();
-		checkSize1(value1);
-
-		whichInsert = "insert(0)";
-		whichRemove = "";
-		System.out.println(sepln + newln + whichInsert + whichRemove + sepln);
-		fixture.insert(value2, 0);
-		whichRemove = "removeLast()";
-		System.out.println(sepln + newln + whichInsert + whichRemove + sepln);
-		fixture.removeLast();
-		checkSize1(value2);
-
-		whichInsert = "insert(0)";
-		whichRemove = "";
-		System.out.println(sepln + newln + whichInsert + whichRemove + sepln);
-		fixture.insert(value1, 0);
-		whichRemove = "remove(-1)";
-		System.out.println(sepln + newln + whichInsert + whichRemove + sepln);
-		fixture.remove(-1);
-		checkSize2(value1, value2);
-		whichRemove = "remove(2)";
-		System.out.println(sepln + newln + whichInsert + whichRemove + sepln);
-		fixture.remove(2);
-		checkSize2(value1, value2);
-		whichRemove = "remove(0)";
-		System.out.println(sepln + newln + whichInsert + whichRemove + sepln);
-		fixture.remove(0);
-		checkSize1(value2);
-
-		whichInsert = "insert(0)";
-		whichRemove = "";
-		System.out.println(sepln + newln + whichInsert + whichRemove + sepln);
-		fixture.insert(value1, 0);
-		whichRemove = "remove(1)";
-		System.out.println(sepln + newln + whichInsert + whichRemove + sepln);
-		fixture.remove(1);
-		checkSize1(value1);
-
-		whichInsert = "insert(1)";
-		whichRemove = "";
-		System.out.println(sepln + newln + whichInsert + whichRemove + sepln);
-		fixture.insert(value2, 1);
-		checkSize2(value1, value2);
-		whichRemove = "removeFirst()";
-		System.out.println(sepln + newln + whichInsert + whichRemove + sepln);
-		fixture.removeFirst();
-		checkSize1(value2);
-
-		whichInsert = "insert(1)";
-		whichRemove = "";
-		System.out.println(sepln + newln + whichInsert + whichRemove + sepln);
-		fixture.insert(value1, 1);
-		whichRemove = "removeLast()";
-		System.out.println(sepln + newln + whichInsert + whichRemove + sepln);
-		fixture.removeLast();
-		checkSize1(value2);
-
-		whichInsert = "insert(1)";
-		whichRemove = "";
-		System.out.println(sepln + newln + whichInsert + whichRemove + sepln);
-		fixture.insert(value1, 1);
-		whichRemove = "remove(-1)";
-		System.out.println(sepln + newln + whichInsert + whichRemove + sepln);
-		fixture.remove(-1);
-		checkSize2(value2, value1);
-		whichRemove = "remove(2)";
-		System.out.println(sepln + newln + whichInsert + whichRemove + sepln);
-		fixture.remove(2);
-		checkSize2(value2, value1);
-		whichRemove = "remove(0)";
-		System.out.println(sepln + newln + whichInsert + whichRemove + sepln);
-		fixture.remove(0);
-		checkSize1(value1);
-
-		whichInsert = "insert(1)";
-		whichRemove = "";
-		System.out.println(sepln + newln + whichInsert + whichRemove + sepln);
-		fixture.insert(value2, 1);
-		whichRemove = "remove(1)";
-		System.out.println(sepln + newln + whichInsert + whichRemove + sepln);
-		fixture.remove(1);
-		checkSize1(value1);
-
-		whichInsert = "insert(2)";
-		whichRemove = "";
-		System.out.println(sepln + newln + whichInsert + whichRemove + sepln);
-		fixture.insert(value2, 2);
-		checkSize2(value1, value2);
-		whichRemove = "removeFirst()";
-		System.out.println(sepln + newln + whichInsert + whichRemove + sepln);
-		fixture.removeFirst();
-		checkSize1(value2);
-
-		whichInsert = "insert(2)";
-		whichRemove = "";
-		System.out.println(sepln + newln + whichInsert + whichRemove + sepln);
-		fixture.insert(value1, 2);
-		whichRemove = "removeLast()";
-		System.out.println(sepln + newln + whichInsert + whichRemove + sepln);
-		fixture.removeLast();
-		checkSize1(value2);
-
-		whichInsert = "insert(2)";
-		whichRemove = "";
-		System.out.println(sepln + newln + whichInsert + whichRemove + sepln);
-		fixture.insert(value1, 2);
-		whichRemove = "remove(-1)";
-		System.out.println(sepln + newln + whichInsert + whichRemove + sepln);
-		fixture.remove(-1);
-		checkSize2(value2, value1);
-		whichRemove = "remove(2)";
-		System.out.println(sepln + newln + whichInsert + whichRemove + sepln);
-		fixture.remove(2);
-		checkSize2(value2, value1);
-		whichRemove = "remove(0)";
-		System.out.println(sepln + newln + whichInsert + whichRemove + sepln);
-		fixture.remove(0);
-		checkSize1(value1);
-
-		whichInsert = "insert(2)";
-		whichRemove = "";
-		System.out.println(sepln + newln + whichInsert + whichRemove + sepln);
-		fixture.insert(value2, 2);
-		whichRemove = "remove(1)";
-		System.out.println(sepln + newln + whichInsert + whichRemove + sepln);
-		fixture.remove(1);
-		checkSize1(value1);
-	}
-
 
 }
