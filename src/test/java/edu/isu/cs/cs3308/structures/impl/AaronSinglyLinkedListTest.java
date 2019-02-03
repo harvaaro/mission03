@@ -19,7 +19,7 @@ public class AaronSinglyLinkedListTest {
 	private SinglyLinkedList<Integer> fixture;
 //	private DoublyLinkedList<Integer> fixture;
 
-	private boolean testIndexOf = false;
+	private boolean testIndexOf = true;
 
 	private ArrayList<Integer> verifyList;
 	private String newln = System.lineSeparator();
@@ -31,9 +31,6 @@ public class AaronSinglyLinkedListTest {
 	private String testBroken = newln + "BROKEN\t :";
 	private String testFailed = "FAILED: ";
 	private String testPassed = "PASSED: ";
-	private String failedAfter = " failed after: ";
-	private String failedStart = " which came after: ";
-	private String failedSizer = " size is: ";
 	private String failedList = newln + "printList:";
 	private String whichInsert;
 	private String whichRemove;
@@ -72,7 +69,10 @@ public class AaronSinglyLinkedListTest {
 	//	/	/	/	/
 
 	private void testNormal(String methodString, Object testMethod) {
-		String showRemoval = (whichRemove != "") ? failedAfter + whichRemove : "";
+		String failedAfter = " failed after: ";
+		String failedStart = " which came after: ";
+		String failedSizer = " size is: ";
+		String showRemoval = (whichRemove != null) ? failedAfter + whichRemove : "";
 		String showPrint = "";
 
 		if (trueListSize > 0) {
@@ -347,7 +347,7 @@ public class AaronSinglyLinkedListTest {
 		} else {
 			for (int i = 0; i < insertAmounts; i++) {
 				whichInsert = addOrder[i];
-				whichRemove = "";
+				whichRemove = null;
 				System.out.println(sepln + newln + whichInsert + whichRemove + sepln);
 
 				methodLoopChoice(i, true);
@@ -373,7 +373,12 @@ public class AaronSinglyLinkedListTest {
 	 */
 	@Test
 	public void ListSize0() {
-		totalTally = 15;
+		if (testIndexOf) {
+			totalTally = 15;
+		}
+		else {
+			totalTally = 14;
+		}
 
 		checkAddRemove(0);
 	}
@@ -383,7 +388,12 @@ public class AaronSinglyLinkedListTest {
 	 */
 	@Test
 	public void ListSize1() {
-		totalTally = 117;
+		if (testIndexOf) {
+			totalTally = 117;
+		}
+		else {
+			totalTally = 105;
+		}
 
 		checkAddRemove(1);
 	}
@@ -393,7 +403,12 @@ public class AaronSinglyLinkedListTest {
 	 */
 	@Test
 	public void ListSize2() {
-		totalTally = 134;
+		if (testIndexOf) {
+			totalTally = 134;
+		}
+		else {
+			totalTally = 112;
+		}
 
 		checkAddRemove(2);
 	}
@@ -403,7 +418,12 @@ public class AaronSinglyLinkedListTest {
 	 */
 	@Test
 	public void ListSize3() {
-		totalTally = 14;
+		if (testIndexOf) {
+			totalTally = 158;
+		}
+		else {
+			totalTally = 146;
+		}
 
 		checkAddRemove(3);
 	}
@@ -413,7 +433,12 @@ public class AaronSinglyLinkedListTest {
 	 */
 	@Test
 	public void ListSize4() {
-		totalTally = 14;
+		if (testIndexOf) {
+			totalTally = 200;
+		}
+		else {
+			totalTally = 188;
+		}
 
 		checkAddRemove(4);
 	}
@@ -423,7 +448,12 @@ public class AaronSinglyLinkedListTest {
 	 */
 	@Test
 	public void ListSize5() {
-		totalTally = 14;
+		if (testIndexOf) {
+			totalTally = 239;
+		}
+		else {
+			totalTally = 227;
+		}
 
 		checkAddRemove(5);
 	}
