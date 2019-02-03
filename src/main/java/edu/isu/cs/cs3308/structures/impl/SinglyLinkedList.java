@@ -57,7 +57,7 @@ public class SinglyLinkedList<E> implements List<E> {
 //		System.out.println("size:" + size);
 //		printList();
 
-		// if theNode is the only one in the list
+		// if only one node in the list
 		if (size == 1) {
 			if (head != null) {
 				tail = head;
@@ -331,7 +331,7 @@ public class SinglyLinkedList<E> implements List<E> {
 		// if the element is not null
 		if (checkElement(element)) {
 			// just check if index is greater than 0
-			if (index > 0) {
+			if (index >= 0) {
 				// if the index is the head
 				if (index == 0) {
 					addFirst(element);
