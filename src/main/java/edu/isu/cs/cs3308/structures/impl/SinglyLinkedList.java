@@ -471,23 +471,31 @@ public class SinglyLinkedList<E> implements List<E> {
 	public int indexOf(E item) {
 		// if there are nodes in the list and item is not null
 		if (!isEmpty() && item != null) {
-			// get the head as the starting point
-			tempNode = head;
+			if (head.getData() == item) {
+				return 0;
+			}
+			else if (tail.getData() == item) {
+				return size-1;
+			}
+			else {
+				// get the head as the starting point
+				tempNode = head;
 
-			// iterate though the list, until we reach the end
-			for (int i = 0; i < size; i++) {
-				//DEBUG
-				System.out.println(i);
-				System.out.println(tempNode.getData());
-				System.out.println(tempNode.getData() == item);
+				// iterate though the list, until we reach the end
+				for (int i = 0; i < size; i++) {
+					//DEBUG
+					System.out.println(i);
+					System.out.println(tempNode.getData());
+					System.out.println(tempNode.getData() == item);
 
-				// if current node matches the item, then return index
-				if (tempNode.getData() == item) {
-					return i;
+					// if current node matches the item, then return index
+					if (tempNode.getData() == item) {
+						return i;
+					}
+
+					// get the next node to keep searching
+					tempNode = tempNode.getNext();
 				}
-
-				// get the next node to keep searching
-				tempNode = tempNode.getNext();
 			}
 		}
 

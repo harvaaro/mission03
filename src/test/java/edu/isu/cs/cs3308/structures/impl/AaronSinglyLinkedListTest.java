@@ -3,13 +3,23 @@ package edu.isu.cs.cs3308.structures.impl;
 import org.junit.*;
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
-import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.Random;
 
 import static org.junit.Assert.*;
 
 /**
+ * This is a series of tests to ensure that a linked list passes all needed checks
+ * It will loop through from size 0 to 5, doing every type of insert with every
+ * type of remove being tested on each of those inserts. Then at each point will
+ * test to see if all of the get calls return correctly like, first, last, etc.
  *
+ * If there is an error at any stage start with the lowest size count errors first.
+ * So if Size 0 has an error fix that issue before moving on. Once a size passes all
+ * tests then you can move onto to any issues the next size has.
+ *
+ * This set of tests should work for any linked list type. Single, Double, Circular, etc
+ * I also have a boolean to allow you to test the indexOf method as well.
  * @author Aaron Harvey
  */
 public class AaronSinglyLinkedListTest {
@@ -21,7 +31,7 @@ public class AaronSinglyLinkedListTest {
 
 	private boolean testIndexOf = true;
 
-	private ArrayList<Integer> verifyList;
+	private LinkedList<Integer> verifyList;
 	private String newln = System.lineSeparator();
 	private String sepln = newln + "###### ###### ######";
 	private int rndBound = 10;
@@ -54,10 +64,7 @@ public class AaronSinglyLinkedListTest {
 
 	@Before
 	public void setUp() {
-		fixture = new SinglyLinkedList<>();
-//		fixture = new DoublyLinkedList<>();
-
-		verifyList = new ArrayList<>();
+		freshList();
 	}
 
 	@After
@@ -68,17 +75,38 @@ public class AaronSinglyLinkedListTest {
 	// Test methods
 	//	/	/	/	/
 
+	/**
+	 * Resets the needed variables for each iteration in the checkaddremove
+	 */
+	private void freshList() {
+		fixture = new SinglyLinkedList<>();
+//		fixture = new DoublyLinkedList<>();
+
+		verifyList = new LinkedList<>();
+		tempListSize = 0;
+		trueListSize = 0;
+		rndBound = 10;
+	}
+
+	/**
+	 * Runs the appropriate test with error log as needed.
+	 * Will also output a debug of each step.
+	 * @param methodString The method that is currently being tested
+	 * @param testMethod The result of the actual method call
+	 */
 	private void testNormal(String methodString, Object testMethod) {
 		String failedAfter = " failed after: ";
 		String failedStart = " which came after: ";
 		String failedSizer = " size is: ";
-		String showRemoval = (whichRemove != null) ? failedAfter + whichRemove : "";
+		String showRemoval = failedAfter + whichRemove;
 		String showPrint = "";
 
+		// incase there is an error have the list to display
 		if (trueListSize > 0) {
 			showPrint = printResult;
 		}
 
+		// run assert tests and increase the tally of passed tests
 		System.out.println(testing + methodString + shouldBe + trueResult + listSize + trueListSize);
 		assertEquals(testFailed + (totalTally - passedTally) + "\t" +
 						testPassed + passedTally + " of " + totalTally +
@@ -90,6 +118,11 @@ public class AaronSinglyLinkedListTest {
 		System.out.println(testPassed + "\t" + passedTally + " of " + totalTally);
 	}
 
+	/**
+	 * This tests that the list will print out correctly based on the correct system new line character
+	 * TODO this method probably can be simplified
+	 * @param printList This is an optional int array that stores the values needed for comparison
+	 */
 	private void testPrint(int... printList) {
 		System.out.println(testing + "printList()" + shouldBe + trueResult + listSize + trueListSize);
 		ByteArrayOutputStream baos = new ByteArrayOutputStream();
@@ -129,137 +162,112 @@ public class AaronSinglyLinkedListTest {
 		System.out.println(testPassed + "\t" + passedTally + " of " + totalTally);
 	}
 
+	/**
+	 * Handles all of the add and remove functions needed for each loop.
+	 * It will do the add/remove to both the real list and the verification list to compare to.
+	 * Also will increment the random number for the int array after each iteration.
+	 * @param orderIndex Which method operation is needed for either add or remove
+	 * @param doAdd Determines whether True to add or False to remove
+	 */
 	private void methodLoopChoice(int orderIndex, boolean doAdd) {
 		Random rnd = new Random();
 		int addValue = rnd.nextInt(10) + rndBound;
 		rndBound += 10;
 
-		if (orderIndex == 0) {
-			if (doAdd) {
-				fixture.addFirst(addValue);
-				verifyList.add(0, addValue);
-				tempListSize++;
-			} else {
-				fixture.removeFirst();
-				verifyList.remove(0);
-				tempListSize--;
-			}
-		} else if (orderIndex == 1) {
-			if (doAdd) {
-				fixture.addLast(addValue);
-				verifyList.add(verifyList.size(), addValue);
-				tempListSize++;
-			} else {
-				fixture.removeLast();
-				verifyList.remove(verifyList.size() - 1);
-				tempListSize--;
-			}
-		} else if (orderIndex == 2) {
-			if (doAdd) {
-				fixture.insert(addValue, 0);
-				verifyList.add(0, addValue);
-				tempListSize++;
-			} else {
-				fixture.remove(0);
-				verifyList.remove(0);
-				tempListSize--;
-			}
-		} else if (orderIndex == 3) {
-			if (doAdd) {
-				fixture.insert(addValue, 1);
-				if (1 > trueListSize) {
-					verifyList.add(0, addValue);
-					tempListSize++;
-				} else {
-					verifyList.add(1, addValue);
-					tempListSize++;
-				}
-			} else {
-				fixture.remove(1);
-				if (1 < trueListSize) {
-					verifyList.remove(1);
-					tempListSize--;
-				}
-			}
-		} else if (orderIndex == 4) {
-			if (doAdd) {
-				fixture.insert(addValue, 2);
-				if (2 > trueListSize) {
-					verifyList.add(1, addValue);
-					tempListSize++;
-				} else {
-					verifyList.add(2, addValue);
-					tempListSize++;
-				}
-			} else {
-				fixture.remove(2);
-				if (2 < trueListSize) {
-					verifyList.remove(2);
-					tempListSize--;
-				}
-			}
-		} else if (orderIndex == 5) {
-			if (doAdd) {
-				fixture.insert(addValue, 3);
-				if (3 > trueListSize) {
-					verifyList.add(2, addValue);
-					tempListSize++;
-				} else {
-					verifyList.add(3, addValue);
-					tempListSize++;
-				}
-			} else {
-				fixture.remove(3);
-				if (3 < trueListSize) {
-					verifyList.remove(3);
-					tempListSize--;
-				}
-			}
-		} else if (orderIndex == 6) {
-			if (doAdd) {
-				fixture.insert(addValue, 4);
-				if (4 > trueListSize) {
-					verifyList.add(3, addValue);
-					tempListSize++;
-				} else {
-					verifyList.add(4, addValue);
-					tempListSize++;
-				}
-			} else {
-				fixture.remove(4);
-				if (4 < trueListSize) {
-					verifyList.remove(4);
-					tempListSize--;
-				}
-			}
-		} else if (orderIndex == 7) {
-			if (doAdd) {
-				fixture.insert(addValue, 5);
-				if (5 > trueListSize) {
-					verifyList.add(4, addValue);
-					tempListSize++;
-				} else {
-					verifyList.add(5, addValue);
-					tempListSize++;
-				}
-			} else {
-				fixture.remove(5);
-				if (5 < trueListSize) {
-					verifyList.remove(5);
-					tempListSize--;
-				}
-			}
-		} else {
+		if (orderIndex == 8) {
 			if (doAdd) {
 				fixture.insert(addValue, -1);
-//				verifyList.add(-1, addValue);
 			} else {
 				fixture.remove(-1);
-//				verifyList.remove(-1);
+			}
+		}
+		else {
+			if (doAdd) {
+				if (orderIndex == 0) {
+					fixture.addFirst(addValue);
+					verifyList.addFirst(addValue);
+				} else if (orderIndex == 1) {
+					fixture.addLast(addValue);
+					verifyList.addLast(addValue);
+				} else if (orderIndex == 2) {
+					fixture.insert(addValue, 0);
+					verifyList.add(0, addValue);
+				} else if (orderIndex == 3) {
+					fixture.insert(addValue, 1);
+					if (verifyList.size() > 1) verifyList.add(1, addValue);
+					else verifyList.addLast(addValue);
+				} else if (orderIndex == 4) {
+					fixture.insert(addValue, 2);
+					if (verifyList.size() > 2) verifyList.add(2, addValue);
+					else verifyList.addLast(addValue);
+				} else if (orderIndex == 5) {
+					fixture.insert(addValue, 3);
+					if (verifyList.size() > 3) verifyList.add(3, addValue);
+					else verifyList.addLast(addValue);
+				} else if (orderIndex == 6)  {
+					fixture.insert(addValue, 4);
+					if (verifyList.size() > 4) verifyList.add(4, addValue);
+					else verifyList.addLast(addValue);
+				} else {
+					fixture.insert(addValue, 5);
+					if (verifyList.size() > 5) verifyList.add(5, addValue);
+					else verifyList.addLast(addValue);
+				}
+				tempListSize++;
+			}
+			else {
+				if (orderIndex == 0) {
+					fixture.removeFirst();
+					verifyList.removeFirst();
+					tempListSize--;
+				} else if (orderIndex == 1) {
+					fixture.removeLast();
+					verifyList.removeLast();
+					tempListSize--;
+				} else if (orderIndex == 2) {
+					fixture.remove(0);
+					verifyList.remove(0);
+					tempListSize--;
+				} else if (orderIndex == 3) {
+					fixture.remove(1);
+					if (verifyList.size() > 1) {
+						verifyList.remove(1);
+						tempListSize--;
+					}
+				} else if (orderIndex == 4) {
+					fixture.remove(2);
+					if (verifyList.size() > 2) {
+						verifyList.remove(2);
+						tempListSize--;
+					}
+				} else if (orderIndex == 5) {
+					fixture.remove(3);
+					if (verifyList.size() > 3) {
+						verifyList.remove(3);
+						tempListSize--;
+					}
+				} else if (orderIndex == 6)  {
+					fixture.remove(4);
+					if (verifyList.size() > 4) {
+						verifyList.remove(4);
+						tempListSize--;
+					}
+				} else {
+					fixture.remove(5);
+					if (verifyList.size() > 5) {
+						verifyList.remove(5);
+						tempListSize--;
+					}
+				}
 			}
 		}
 	}
 
+	/**
+	 * Verifies all of the get or retrieve methods that need to work at each stage.
+	 * After each add or remove these methods are compared to ensure it changes
+	 * how the list is supposed to change and that each value is appropriately assigned.
+	 */
 	private void checkSize() {
 		trueListSize = tempListSize;
 		printResult = "";
@@ -319,14 +327,18 @@ public class AaronSinglyLinkedListTest {
 			}
 		} else {
 			if (testIndexOf) {
-				for (int i = 0; i < tempListSize; i++) {
-					trueResult = i; //TODO check for -1 maybe
+				for (int i = 0; i < trueListSize; i++) {
+					trueResult = i;
 					testNormal("indexOf(" + listValues[i] + ")", fixture.indexOf(listValues[i]));
 				}
 			}
 		}
 	}
 
+	/**
+	 * Iterates through every possible add and remove function and calls those methods.
+	 * @param checkListSize The size of the list to test
+	 */
 	private void checkAddRemove(int checkListSize) {
 		// add appropriate amounts for checking
 		for (int i = 0; i < checkListSize - 1; i++) {
@@ -334,6 +346,7 @@ public class AaronSinglyLinkedListTest {
 		}
 
 		int insertAmounts = checkListSize + 4;
+		int removeAmounts = checkListSize + 4;
 
 		String[] addOrder = {"addFirst()", "addLast", "insert(0)", "insert(1)",
 				"insert(2)", "insert(3)", "insert(4)", "insert(5)", "insert(-1)"};
@@ -345,21 +358,28 @@ public class AaronSinglyLinkedListTest {
 		if (checkListSize == 0) {
 			checkSize();
 		} else {
+			// inserts
 			for (int i = 0; i < insertAmounts; i++) {
-				whichInsert = addOrder[i];
-				whichRemove = null;
-				System.out.println(sepln + newln + whichInsert + whichRemove + sepln);
+				freshList();
+				// removes
+				for (int r = 0; r < removeAmounts; r++) {
+					if (r < 6) {
+						whichInsert = addOrder[i];
+						whichRemove = "";
+						System.out.println(sepln + newln + whichInsert + whichRemove + sepln);
 
-				methodLoopChoice(i, true);
-//		if (i != 8) { tempListSize++; }
-				checkSize();
+						methodLoopChoice(i, true);
+						checkSize();
+					}
 
-				whichRemove = removeOrder[i];
-				System.out.println(sepln + newln + whichInsert + whichRemove + sepln);
+					if (i != 8) {
+						whichRemove = removeOrder[r];
+						System.out.println(sepln + newln + whichInsert + whichRemove + sepln);
 
-				methodLoopChoice(i, false);
-//		if (i != 8) { tempListSize++; }
-				checkSize();
+						methodLoopChoice(r, false);
+						checkSize();
+					}
+				}
 			}
 		}
 	}
@@ -369,7 +389,8 @@ public class AaronSinglyLinkedListTest {
 	//	/	/	/	/
 
 	/**
-	 * Test of new, of class SinglyLinkedList.
+	 * Test for a list with a size of 0
+	 * In this method it tests mostly gets and some removes on an empty list.
 	 */
 	@Test
 	public void ListSize0() {
@@ -384,75 +405,75 @@ public class AaronSinglyLinkedListTest {
 	}
 
 	/**
-	 * Test of new, of class SinglyLinkedList.
+	 * Test for a list with a size of 1
 	 */
 	@Test
 	public void ListSize1() {
 		if (testIndexOf) {
-			totalTally = 117;
+			totalTally = 585;
 		}
 		else {
-			totalTally = 105;
+			totalTally = 525;
 		}
 
 		checkAddRemove(1);
 	}
 
 	/**
-	 * Test of new, of class SinglyLinkedList.
+	 * Test for a list with a size of 2
 	 */
 	@Test
 	public void ListSize2() {
 		if (testIndexOf) {
-			totalTally = 134;
+			totalTally = 870;
 		}
 		else {
-			totalTally = 112;
+			totalTally = 762;
 		}
 
 		checkAddRemove(2);
 	}
 
 	/**
-	 * Test of new, of class SinglyLinkedList.
+	 * Test for a list with a size of 3
 	 */
 	@Test
 	public void ListSize3() {
 		if (testIndexOf) {
-			totalTally = 158;
+			totalTally = 1113;
 		}
 		else {
-			totalTally = 146;
+			totalTally = 966;
 		}
 
 		checkAddRemove(3);
 	}
 
 	/**
-	 * Test of new, of class SinglyLinkedList.
+	 * Test for a list with a size of 4
 	 */
 	@Test
 	public void ListSize4() {
 		if (testIndexOf) {
-			totalTally = 200;
+			totalTally = 1384;
 		}
 		else {
-			totalTally = 188;
+			totalTally = 1192;
 		}
 
 		checkAddRemove(4);
 	}
 
 	/**
-	 * Test of new, of class SinglyLinkedList.
+	 * Test for a list with a size of 5
 	 */
 	@Test
 	public void ListSize5() {
 		if (testIndexOf) {
-			totalTally = 239;
+			totalTally = 1586;
 		}
 		else {
-			totalTally = 227;
+			totalTally = 1364;
 		}
 
 		checkAddRemove(5);
