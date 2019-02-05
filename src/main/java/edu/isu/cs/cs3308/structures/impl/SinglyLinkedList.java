@@ -483,11 +483,6 @@ public class SinglyLinkedList<E> implements List<E> {
 
 				// iterate though the list, until we reach the end
 				for (int i = 0; i < size; i++) {
-					//DEBUG
-					System.out.println(i);
-					System.out.println(tempNode.getData());
-					System.out.println(tempNode.getData() == item);
-
 					// if current node matches the item, then return index
 					if (tempNode.getData() == item) {
 						return i;

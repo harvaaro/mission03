@@ -189,6 +189,7 @@ public class AaronSinglyLinkedListTest {
 				} else if (orderIndex == 1) {
 					fixture.addLast(addValue);
 					verifyList.addLast(addValue);
+					System.out.println("addinglast");
 				} else if (orderIndex == 2) {
 					fixture.insert(addValue, 0);
 					verifyList.add(0, addValue);
@@ -340,15 +341,10 @@ public class AaronSinglyLinkedListTest {
 	 * @param checkListSize The size of the list to test
 	 */
 	private void checkAddRemove(int checkListSize) {
-		// add appropriate amounts for checking
-		for (int i = 0; i < checkListSize - 1; i++) {
-			methodLoopChoice(1, true);
-		}
-
 		int insertAmounts = checkListSize + 4;
 		int removeAmounts = checkListSize + 4;
 
-		String[] addOrder = {"addFirst()", "addLast", "insert(0)", "insert(1)",
+		String[] addOrder = {"addFirst()", "addLast()", "insert(0)", "insert(1)",
 				"insert(2)", "insert(3)", "insert(4)", "insert(5)", "insert(-1)"};
 		String[] removeOrder = {"removeFirst()", "removeLast()", "remove(0)", "remove(1)",
 				"remove(2)", "remove(3)", "remove(4)", "remove(5)", "remove(-1)"};
@@ -361,6 +357,12 @@ public class AaronSinglyLinkedListTest {
 			// inserts
 			for (int i = 0; i < insertAmounts; i++) {
 				freshList();
+
+				// add appropriate amounts for checking
+				for (int p = 0; p < checkListSize - 1; p++) {
+					methodLoopChoice(1, true);
+				}
+
 				// removes
 				for (int r = 0; r < removeAmounts; r++) {
 					if (r < 6) {
@@ -428,7 +430,7 @@ public class AaronSinglyLinkedListTest {
 			totalTally = 870;
 		}
 		else {
-			totalTally = 762;
+			totalTally = 672;
 		}
 
 		checkAddRemove(2);
@@ -443,7 +445,7 @@ public class AaronSinglyLinkedListTest {
 			totalTally = 1113;
 		}
 		else {
-			totalTally = 966;
+			totalTally = 931;
 		}
 
 		checkAddRemove(3);
@@ -458,7 +460,7 @@ public class AaronSinglyLinkedListTest {
 			totalTally = 1384;
 		}
 		else {
-			totalTally = 1192;
+			totalTally = 1280;
 		}
 
 		checkAddRemove(4);
@@ -473,7 +475,7 @@ public class AaronSinglyLinkedListTest {
 			totalTally = 1586;
 		}
 		else {
-			totalTally = 1364;
+			totalTally = 1560;
 		}
 
 		checkAddRemove(5);
